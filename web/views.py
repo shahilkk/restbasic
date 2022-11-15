@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from . models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -45,7 +45,7 @@ def editbrand(request,id):
 def delectdata(request,id):
     editproduct=Brand.objects.filter(id=id).delete()
  
-    return JsonResponse({'brand': "data"})   
+    return redirect('/')
 
    
 
