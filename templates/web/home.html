@@ -1,0 +1,248 @@
+{% extends 'web/partials/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+
+            </div>
+            <div class="col-auto">
+                <a href="/addbrand" class="btn btn-primary me-1">
+                    <i class="fas fa-plus"></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title">Recent Invoices</h5>
+                        </div>
+                        <!-- <div class="col-auto">
+                            <a href="invoices.html" class="btn-right btn btn-sm btn-outline-primary">
+                                View All
+                            </a>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-stripped table-hover datatable">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Marketplace</th>
+                                    <th>Zipcode</th>
+                                    <th>created_date</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in brand %}
+                                <tr>
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            {{i.name}}</a>
+                                        </h2>
+                                    </td>
+                                    <td> <a href=""><img class="avatar avatar-sm me-2 avatar-img rounded-circle"
+                                                src="{{i.place.logo.url}}" alt="User Image">
+                                            {{i.place}}</a></td>
+                                    <td>{{i.code}}</td>
+                                    <th>{{i.created_date}}</th>
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i class="fas fa-ellipsis-h"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" class="btn" data-bs-toggle="modal"
+                                                    onclick="Editbrand({{i.id}})" data-bs-target="#add_items"><i
+                                                        class="far fa-edit me-2"></i>Edit</a>
+
+                                                <a class="dropdown-item" onclick="Delectbrand({{i.id}})"><i
+                                                        class="far fa-trash-alt me-2"></i>Delete</a>
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal custom-modal fade bank-details" id="add_items" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <form id="editdatas">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <div class="form-header text-start mb-0">
+
+                        <h4 class="mb-0">Edit Brand</h4>
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="bank-inner-details">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+
+                                <div class="form-group">
+
+
+                                    <label> Name</label>
+                                    <input type="text" class="form-control" id="name" name="name">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+
+
+
+                                    <label>market</label>
+                                    <select class="form-select form-control" id="place" name="place">
+
+                                        {% for i in market %}
+                                        <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+
+
+
+                                    <label>zipcode</label>
+                                    <select class="form-select form-control" id="code" name="code">
+
+                                        {% for i in zipcode %}
+                                        <option value="{{i.id}}">{{i.zipcode}}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" id="created_date" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Upload</label>
+                                        <a href="" id="viewimg">viewimage</a>
+                                    <input type="file" id="image" class="form-control">
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="bank-details-btn">
+                        <a href="javascript:void(0);" data-bs-dismiss="modal"
+                            class="btn bank-cancel-btn me-2">Cancel</a>
+                        <button class=" btn bank-save-btn" id="subtn" type="submit"> save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block JS %}
+<script>
+    function Editbrand(id) {
+        $.ajax({
+            url: "/editbrand/" + id,
+            type: 'GET',
+
+            success: function (responce) {
+
+                // var category = response[brand.code]
+                // console.log(responce)
+                $('#name').val(responce.brand.name)
+
+                $('#code').append(`<option value="${responce.brand.code}">
+                                       ${responce.brand.code}
+                                  </option>`);
+                $('#place').append(`<option value="${responce.brand.place}">
+                                       ${responce.brand.place}
+                                  </option>`);
+                $('#created_date').val(responce.brand.created_date)
+                $('#viewimg').attr(href,responce.brand.image)
+                // $('#image').val(responce.brand.image.url)
+            }
+
+        })
+
+        $('#editdatas').submit(function (e) {
+            // var data = $("#editdatas").serializeArray();
+            // e.preventDefault();
+            var formData = new FormData(e.target);
+            e.preventDefault();
+            $.ajax({
+                url: "/api/editdatas/" + id + "/",
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                mimeType: "multipart/form-data",
+                statusCode: {
+                    201: function (response) {
+                        alert('scuess')
+                    },
+                    400: function (response) {
+                        alert('not')
+
+                    }
+                }
+
+            })
+            return false
+        })
+
+    }
+
+
+
+    function Delectbrand(id) {
+        $.ajax({
+            url: "/delectdata/" + id,
+            type: 'GET',
+
+            success: function (responce) {
+
+                window.location.href = "/";
+            }
+
+        })
+    }
+</script>
+{% endblock %}
