@@ -6,7 +6,7 @@ class CreateUser(serializers.ModelSerializer):
     # place = serializers.RelatedField(source='place', read_only=True)
     class Meta:
         model = Brand
-        fields = ["name","created_date","place","code","image"]
+        fields = ["id","name","created_date","place","code","image"]
 
     def create(self, validated_data):
         brand = Brand.objects.create(
@@ -22,7 +22,7 @@ class CreateUser(serializers.ModelSerializer):
 class EditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ["name", "place", "code","created_date","image"]
+        fields = ["id","name", "place", "code","created_date","image"]
 
     def update(self, instance, validated_data):
         instance.name=validated_data.get('name')
@@ -35,12 +35,13 @@ class EditSerializer(serializers.ModelSerializer):
 
 
 
+class FeedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feed
+        fields = ['id', 'subject', 'sprit_category', 'sprit_subcategory', 'wine_category', 'wine_subcategory', 'beer_category', 'beer_subcategory']
+
+    def create(self, validated_data):
+        brand_id = self.context['brand_id']
+        return Feed.objects.create(brand_id=brand_id, **validated_data)
 
 
-# class AccountUpdateSerializer(serializers.Serializer):
-#     model = Brand
-
-#     name = serializers.CharField(required=True)
-#     place = serializers.CharField(required=True)
-#     code = serializers.CharField(required=True)
-#     created_date = serializers.CharField(required=True)

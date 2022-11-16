@@ -1,0 +1,123 @@
+{% extends 'web/partials/base.html' %}
+{% block content %}
+{% load static %}
+<div class="content container-fluid">
+
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Feed</h3>
+                <ul class="breadcrumb">
+                    <li class=""><a href="/">Dashboard > </a></li>
+                    <li class=""><a href="">> Feed</a></li>
+                    <li class=" active"> > Add Feed</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Add Feed</h4>
+                    <form id="FeedForm" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <textarea name="subject" class="form-control" id="subject" cols="20"
+                                        rows="5"></textarea>
+                                </div>
+
+                               
+                                <div class="form-group">
+                                    <label>Beer Category</label>
+                                    <input type="text" class="form-control" name="beer_category" id="beer_category">
+                                </div>
+                                <div class="form-group">
+                                    <label>Beer SubCategory</label>
+                                    <input type="text" class="form-control" name="beer_subcategory" id="beer_subcategory">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label>Sprit Category</label>
+                                    <input type="text" class="form-control" name="sprit_category" id="sprit_category">
+                                </div>
+                                <div class="form-group">
+                                    <label>Sprit SubCategory</label>
+                                    <input type="text" class="form-control" name="sprit_subcategory"
+                                        id="sprit_subcategory">
+                                </div>
+                                <div class="form-group">
+                                    <label>Wine Category</label>
+                                    <input type="text" class="form-control" name="wine_category" id="wine_category">
+                                </div>
+                                <div class="form-group">
+                                    <label>Wine SubCategory</label>
+                                    <input type="text" class="form-control" name="wine_subcategory"
+                                        id="wine_subcategory">
+                                </div>
+                                <input type="hidden"  value="{{id}}" id="id">
+                            </div>
+                            
+
+                        </div>
+                </div>
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary">Add Brand</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block JS %}
+<script>
+
+    $('#FeedForm').submit(function (e) {
+        var formData = new FormData(e.target);
+        e.preventDefault();
+        id=$('#id').val()
+        // alert(id)
+        $.ajax({
+            url: "/api/brands/"+id+"/feed/",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            // mimeType: "multipart/form-data",
+
+            statusCode: {
+                201: function (response) {
+                    window.location.href = "/";
+                },
+                400: function (response) {
+                    alert('not')
+
+                }
+            }
+
+
+
+        });
+        return true
+    })
+
+</script>
+{% endblock %}

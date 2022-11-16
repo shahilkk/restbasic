@@ -86,36 +86,21 @@
     $('#userForm').submit(function (e) {
         var formData = new FormData(e.target);
             e.preventDefault();
-            // var data = $("#userForm").serializeArray();
-            // e.preventDefault();
-           
-            // alert(data)
             $.ajax({
-                url: "/api/brand/",
+                url: "/api/brands/",
                 type: "POST",
                 data: formData,
                 processData: false,
                 contentType: false,
                 mimeType: "multipart/form-data",
-                // beforeSend: function (xhr) {
-                //     xhr.setRequestHeader(
-                //         "Authorization",
-                //         "Bearer " + localStorage.getItem("useraccesstoken")
-                //     );
-                // },
+               
                 statusCode: {
                     201: function (response) {
                         window.location.href = "/";
                     },
                     400: function (response) {
                         alert('not')
-                        // $("#successAlert").show();
-                        // $("#successAlert").addClass('alert alert-danger')
-                        // $("#successAlert").html('User with this email already exists')
-                        // setTimeout(function () {
-                        //     $("#successAlert").hide();
-                        //     $("#successAlert").addClass('alert alert-success')
-                        // }, 1500);
+                       
                     }
                 }
 

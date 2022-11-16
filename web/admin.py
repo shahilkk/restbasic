@@ -6,4 +6,6 @@ from . models import *
 admin.site.register(Marketplace)
 
 admin.site.register(Zipcode)
+
 admin.site.register(Brand)
+admin.site.register(Feed)

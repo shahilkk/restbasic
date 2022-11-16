@@ -1,0 +1,116 @@
+{% extends 'web/partials/base.html' %}
+{% block content %}
+{% load static %}
+<div class="content container-fluid">
+    <div class="row justify-content-lg-center">
+        <div class="col-lg-10">
+
+            <div class="page-header">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="page-title">Profile</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Profile</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="card"> -->
+                <div class="row" id="appendjobcard">
+                </div>
+            <!-- </div> -->
+           
+           
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+
+{% block JS %}
+<script>
+    var params = new window.URLSearchParams(window.location.search);
+    var brandid = params.get('brand-id')
+    $.ajax({
+        url: '/getelement/'+brandid,
+        type: 'GET',
+
+        success: function (response) {
+            // alert((response.data).length)
+            // $(".firstsetjob").hide()
+            // $('.secondset').hide()
+            // $('#jobtypespn').hide()
+            var len = (response.data).length
+            // alert(len)
+            var html = ""
+            for (var datas in response.data) {
+                $("#appendjobcard").append(' <h6>'+ response.data[datas].name +'</h6>\
+                        <div class="col-lg-4">\
+                            <div class="card">\
+                                <div class="card-body">\
+                                   <img class="img-fluid" src="'+ response.data[datas].image +'" alt="">\
+                                </div>\
+                            </div>\
+                        </div>\
+                        <div class="col-lg-8">\
+                            <div class="card">\
+                                <div class="card-body" >\
+                                   <img height="200" width="300" src="'+ response.data[datas].place +'" alt="">\
+                                </div>\
+                            </div>\
+                            <div class="card">\
+                                <div class="card-header">\
+                                    <h5 class="card-title">Details</h5>\
+                                </div>\
+                                <div class="card-body card-body-height">\
+                                    <h3>subject</h3>\
+                                    <p>'+ response.data[datas].subject +'</p>\
+                                    <ul class="activity-feed">\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Sprit Category</div>\
+                                            <span class="feed-text">'+ response.data[datas].sprit_category +'</span>\
+                                        </li>\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Sprit SubCategory</div>\
+                                            <span class="feed-text">'+ response.data[datas].sprit_subcategory +'</span>\
+                                        </li>\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Wine Category</div>\
+                                            <span class="feed-text">'+ response.data[datas].wine_category +'</span>\
+                                        </li>\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Wine SubCategory</div>\
+                                            <span class="feed-text">'+ response.data[datas].wine_subcategory +'</span>\
+                                        </li>\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Beer Category</div>\
+                                            <span class="feed-text">'+ response.data[datas].beer_category +'</span>\
+                                        </li>\
+                                        <li class="feed-item">\
+                                            <div class="feed-date">Beer SubCategory</div>\
+                                            <span class="feed-text">'+ response.data[datas].beer_subcategory +'</span>\
+                                        </li>\
+                                    </ul>\
+                                </div>\
+                                <div class="mt-4">\
+                                    <a href="/updatefeed/'+ response.data[datas].feedid + '" class="btn btn-primary">Update</a>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    ')
+            }
+        }
+    })
+</script>
+{% endblock %}

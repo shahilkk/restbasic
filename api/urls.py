@@ -5,7 +5,9 @@ from rest_framework.routers  import DefaultRouter
 from rest_framework_nested import routers
 
 router = routers.DefaultRouter()
-router.register('brand', views.CreateView, basename='brand')
+router.register('brands', views.CreateView, basename='brands')
 
-brand_router = routers.NestedDefaultRouter(router, 'brand', lookup='brand')
+brand_router = routers.NestedDefaultRouter(router, 'brands', lookup='brand')
+brand_router.register('feed', views.FeedViewSet,basename='brand-feed')
+
 urlpatterns=router.urls + brand_router.urls    
