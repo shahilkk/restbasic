@@ -36,6 +36,7 @@ class EditSerializer(serializers.ModelSerializer):
 
 
 class FeedSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Feed
         fields = ['id', 'subject', 'sprit_category', 'sprit_subcategory', 'wine_category', 'wine_subcategory', 'beer_category', 'beer_subcategory']

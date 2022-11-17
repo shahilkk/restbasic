@@ -14,6 +14,7 @@ urlpatterns = [
     path("viewfeed/", views.viewfeed, name="viewfeed"),
     path("getelement/<int:id>", views.getelement, name="getelement"),
     path("updatefeed/<int:id>", views.updatefeed, name="updatefeed"),
+    path("test", views.test, name="test"),
    
     
 

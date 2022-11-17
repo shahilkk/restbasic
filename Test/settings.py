@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "rest_framework",
+    "django_celery_results",
+    "django_celery_beat",
     'web',
     'api',
 ]
@@ -128,3 +130,23 @@ STATICFILES_DIRS = ((BASE_DIR / "static"),)
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# CELERY SETTINGS
+CELERY_BROKER_URL='redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT=['application/json']
+CELERY_RESULT_SERIALIZER='json'
+CELERY_TASK_SERIALIZER='json'
+CELERY_TIMEZONE='Asia/Kolkata'
+CELERY_RESULT_BACKEND ='django-db'
+
+
+
+CELERY_BEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseSchedulers'
+# CELERY_BEAT_SCHEDULE ={
+#     'notify_customer':{
+#         'task':'playground.tasks.notify_customer',
+#         'schedule':5,
+#         'args':['HELLO SHAHIL'],
+#     }
+# }

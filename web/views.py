@@ -1,8 +1,10 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from . models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, TemplateView
+
+from .tasks import change_status
 # Create your views here.
 
 
@@ -10,6 +12,7 @@ def home(request):
     brand=Brand.objects.all()
     market=Marketplace.objects.all()
     zipcode=Zipcode.objects.all()
+    change_status.delay('hello')
     context={
         "brand":brand,
         "market":market,
@@ -100,3 +103,10 @@ def updatefeed(request,id):
         "feed":feed
     }
     return render(request,'web/updatefeed.html',context)    
+
+
+
+# celery
+def test(request):
+    change_status.delay('hello')
+    return HttpResponse('Done') 
